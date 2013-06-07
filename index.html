@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>asdf</title>
+		<link type="text/css" rel="stylesheet" href="css/style.css">
+		<script src="js/jquery2.js"></script>
+		<script src="js/polyfills.js"></script>
+		<script>var app = {};</script>
+		<script src="js/musicPlayer.js"></script>
+		<script src="js/vis.js"></script>
+		<script src="js/audio.js"></script>
+		<script>
+			$(function () {
+
+				var $t = $('#timeline');
+				var $h = $t.children('button');
+				var hWidth = $h.width();
+				var downPixel;
+				var timelineOffset;
+				var timelineW;
+
+				var mouseMove = function (e) {
+					var newLeft = e.pageX - timelineOffset - downPixel;
+
+					if (newLeft > timelineW - hWidth) {
+						newLeft = timelineW - hWidth;
+					} else if (newLeft < 0) {
+						newLeft = 0;
+					}
+					requestAnimationFrame(function () {
+						$h.css('left', newLeft)
+						console.log(e.pageX - timelineOffset);
+					});
+
+				};
+
+				var mouseUp = function (e) {
+					downPixel = false;
+					$(document).off('mousemove', mouseMove);
+				};
+
+				$h.on('mousedown', function (e) {
+					var tMargin = parseInt($t.css('margin-left').replace('px', ''));
+					console.log(tMargin)
+					timelineW = $t.width() - tMargin;
+					hWidth = $h.width();
+					downPixel = e.offsetX;
+					timelineOffset = $t.offset().left;
+
+
+					console.log(downPixel)
+					$(document).on('mousemove', mouseMove);
+					$(document).one('mouseup', mouseUp);
+
+				});
+
+
+			});
+		</script>
+
+	</head>
+	<body>
+
+
+		<div id="wrapper">
+			<div id="header" class="row">
+				<b>Julian Raya</b> Graphic Designer &times; UX Wizard 510&ordm;926&ordm;2098 julianMRaya<span
+					class="big">&otimes;</span>gmail.com
+			</div>
+
+			<div id="visualizer">
+				<canvas id="canvas1">you suck</canvas>
+				<canvas id="canvas2">you suck</canvas>
+				<canvas id="canvas3">you suck</canvas>
+				<canvas id="canvas4">you suck</canvas>
+
+			</div>
+
+			<div id="footer"></div>
+
+		</div>
+
+	</body>
+</html>
