@@ -17,7 +17,7 @@ $(function(){
 		numFrames: 7,
 		maxClones: 10000,
 		fps: 30,
-		srcBase: "audio_vis/images/ralf/ralf00",
+		srcBase: "/audio_vis/images/ralf/ralf00",
 		ext: '.png',
 		firstFrame: 51,
 		screenW: 0,
