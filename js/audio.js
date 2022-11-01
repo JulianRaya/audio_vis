@@ -14,9 +14,12 @@ $(function() {
 	var audio = {};
 
 	var aCtx = app.aContext = new AudioContext();
+	console.log('here!!!!');
+	console.log(aCtx);
 	var $ctrlPanel = $('#ctrlPanel');
 
 	function setupAudioNodes() {
+		console.log('setupAudioNodes');
 		var audio = app.audioElement;
 		var ana1 = app.analyser = (app.analyser || aCtx.createAnalyser());
 		var ana2 = app.analyser2 = (app.analyser2 || aCtx.createAnalyser());
@@ -31,7 +34,7 @@ $(function() {
 	}
 
 	function loadSong(url) {
-
+		console.log('loadSong', url);
 		if (app.audioElement) $(app.audioElement).remove();
 		if (app.source) app.source.disconnect();
 
@@ -41,7 +44,9 @@ $(function() {
 		app.audioElement.controls = true;
 
 		app.audioElement.src = url;
+		console.log('checking can play');
 		app.audioElement.addEventListener('canplay', function(e) {
+			console.log('can play indeed');
 			setupAudioNodes();
 		}, false);
 
@@ -112,6 +117,7 @@ $(function() {
 	*/
 
 	$('body').on('click', function(){
+
 		loadSong('mp3/komori.mp3');
 	})
 
