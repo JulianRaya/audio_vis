@@ -111,6 +111,9 @@ $(function() {
 	});
 	*/
 
-	loadSong('mp3/komori.mp3');
+	$('body').on('click', function(){
+		loadSong('mp3/komori.mp3');
+	})
+
 
 });
