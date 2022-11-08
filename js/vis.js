@@ -70,8 +70,8 @@ $(function () {
 
 		}
 
-		app.screenH = Math.floor(($wrap.height()) / 2);
-		app.screenW = Math.floor($wrap.width() / 2);
+		app.screenH = Math.floor(($wrap.height()));
+		app.screenW = Math.floor($wrap.width());
 		console.log(app.screenH, app.screenW)
 
 		cvs.width = cvs2.width = cvs3.width = cvs4.width = app.screenW;
@@ -118,15 +118,8 @@ $(function () {
 			app.imageData = ctx.getImageData(0, 0, app.screenW, app.screenH);
 
 			cvs.width = app.screenW;
-			cvs2.width = app.screenW;
-			cvs3.width = app.screenW;
-			cvs4.width = app.screenW;
 
 			cvs.height = app.screenH;
-			cvs2.height = app.screenH;
-			cvs3.height = app.screenH;
-			cvs4.height = app.screenH;
-
 
 
 			var newImgData = ctx.createImageData(app.screenW, app.screenH);
@@ -141,13 +134,14 @@ $(function () {
 
 			var oneOrNeg = [-1,1];
 			var x, y, angle, mirrorIndex, mult, width, height, freq, amp, yTrigFunction, frameNum, maxRatio, scale;
+			console.log('density = ', app.density)
 			for (var i = 0; i < app.density; i++) {
 
 				frameNum = (masterFrame + i) % app.numFrames;
 				yTrigFunction = trigs[i % trigs.length];
 				mirrorIndex = i - (i % 2); // i or i-1
 				mult = oneOrNeg[i % 2]; // 1 or -1
-				maxRatio = app.maxClones / app.density;
+				maxRatio = app.maxClones / 1//app.density;
 
 				scale = app.scale;
 				amp = (scale * app.screenH / 2) * app.amplitude * 1.5;
@@ -195,7 +189,7 @@ $(function () {
 				ctx.closePath();
 			}
 
-			ctx3.save();
+			/*ctx3.save();
 			ctx3.scale(1,-1);
 			ctx3.drawImage(cvs, 0, -cvs.height);
 			ctx3.restore();
@@ -208,7 +202,7 @@ $(function () {
 			ctx4.save();
 			ctx4.scale(-1,-1);
 			ctx4.drawImage(cvs, -cvs.width, -cvs.height);
-			ctx4.restore();
+			ctx4.restore();*/
 
 		}
 	};

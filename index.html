@@ -57,7 +57,12 @@
 
 			});
 		</script>
-
+		<style>
+			#fileInputContainer{
+				position: fixed;
+				z-index: 9999;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -69,14 +74,18 @@
 			</div>
 
 			<div id="visualizer">
-				<canvas id="canvas1">you suck</canvas>
-				<canvas id="canvas2">you suck</canvas>
-				<canvas id="canvas3">you suck</canvas>
-				<canvas id="canvas4">you suck</canvas>
+				<canvas id="canvas1"></canvas>
+				<canvas id="canvas2"></canvas>
+				<canvas id="canvas3"></canvas>
+				<canvas id="canvas4"></canvas>
 
 			</div>
 
 			<div id="footer"></div>
+
+			<div id="fileInputContainer">
+				<input type="file" id="fileInput" />
+			</div>
 
 		</div>
 

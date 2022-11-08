@@ -17,26 +17,66 @@ $(function() {
 	console.log(aCtx);
 	var $ctrlPanel = $('#ctrlPanel');
 
-	function setupAudioNodes() {
-		console.log('setupAudioNodes');
+	function setupAudioNodes(buffer) {
+		console.log('setupAudioNodes');	
+
 		var audio = app.audioElement;
 		var ana1 = app.analyser = (app.analyser || aCtx.createAnalyser());
 		var ana2 = app.analyser2 = (app.analyser2 || aCtx.createAnalyser());
 
-		var src = app.source = aCtx.createMediaElementSource(audio);
+		/*var src = app.source = aCtx.createMediaElementSource(audio);
+		*/
+		var src = app.source = aCtx.createBufferSource();
+
 		src.connect(ana2);
 		ana2.connect(ana1);
 		src.connect(aCtx.destination);
 
-		app.audioElement.play();
+		src.buffer = buffer;
+
+		if (!src.start) {
+			src.start = src.noteOn //in old browsers use noteOn method
+			src.stop = src.noteOff //in old browsers use noteOff method
+		};
+
+		src.start(0);
+		/*app.audioElement.play();*/
 		setAnimation();
 	}
 
-	function loadSong(url) {
-		console.log('loadSong', url);
+	function loadSong(file, file_name) {
+
+		console.log('loadSong', file_name);
 		if (app.audioElement) $(app.audioElement).remove();
 		if (app.source) app.source.disconnect();
 
+		let fr = new FileReader();
+		fr.onload = function(e){
+			console.log('onload file reader');
+			var fileResult = e.target.result;
+			var audioContext = app.aContext;
+
+			if(audioContext == null){
+				return;
+			}
+
+			console.log('decoding the audio');
+			audioContext.decodeAudioData(fileResult, function(buffer){
+				console.log('decode callback');
+				setupAudioNodes(buffer);
+			}, function(){
+				console.error('decoding failed!');
+			});
+		};
+
+		fr.onerror = function(){
+			console.log('error reading file');
+		};
+
+		console.log('starting file read');
+		fr.readAsArrayBuffer(file);
+
+		return;
 
 		app.animFunctions[1] = null;
 		app.audioElement = $('<audio>').appendTo(document.body)[0];
@@ -90,20 +130,12 @@ $(function() {
 			app.amplitude = mid2 * 0.8;
 			app.density = ((treb + mid1 + mid2 + bass) / 4) * 15000;
 			app.rotation = treb * mid2;
-			app.scale = bass * 0.4;
+			app.scale = bass * 0.6;
 			app.bass = bass;
 			app.treb = treb;
 		};
 	}
 
-
-	var x = 1;
-	if (x < 0) {
-		function blast() {
-			'use strict';
-
-		}
-	}
 
 	/*
 	$.getJSON('list', function(data){
@@ -117,9 +149,12 @@ $(function() {
 	});
 	*/
 
-	$('body').one('click', function(){
-
-		loadSong('mp3/komori.mp3');
+	$('#fileInput').one('change', function(){
+		var audioInput = this;
+		var file = audioInput.files[0];
+        var fileName = file.name;
+                
+		loadSong(file, fileName);
 	})
 
 
